@@ -1,0 +1,10 @@
+FROM oscarsystem/oscar:0.8.2
+
+# install Jupyter Notebook and IJulia
+RUN apt-get install -y python3 python3-pip && python3 -m pip install --no-cache-dir jupyterlab
+# we need IJulia to set up a kernel that uses our custom project path, thus we have to call installkernel manually
+RUN julia --project=/root/.julia/environments/env --print 'using Pkg; Pkg.add("IJulia"); using IJulia; installkernel("Julia", "--project=/root/.julia/environments/env")'
+
+EXPOSE 8888
+
+ENTRYPOINT [ "jupyter-lab", "--allow-root", "--ip=0.0.0.0", "--no-browser", "--ServerApp.root_dir=/data" ]

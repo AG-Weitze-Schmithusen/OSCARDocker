@@ -2,58 +2,28 @@
 
 This Docker file contains a recent version of the software in the OSCAR project:
 
-- Julia
-- Polymake
-- Singular
-
-and the Julia modules
-
-- Singular.jl
-- Polymake.jl
-- Nemo.jl
-- Hecke.jl
-- Oscar.jl
-
-Furthermore Jupyter and the Julia Kernel for Jupyter is installed.
-
 ## Usage
 
-To start Julia in the Docker image, execute
+1. Make sure that Docker is installed
+2. Create a directory to hold your Julia scripts:
+    ```
+    mkdir data
+    ```
+3. Run
+    ```
+    docker run -v "$(pwd)/data:/data" -it oscarsystem/oscar:latest
+    ```
+4. This will open a Julia prompt. Now you can load Oscar:
+    ```
+    using Oscar
+    ```
+
+## Usage with JupyterLab
+
+With JupyterLab, you can run Oscar inside a Web server.
+
 ```
-docker run -it oscarsystem/oscardocker:latest
-```
-You can then start julia via the command
-```
-julia
-```
-and load Singular.jl via
-```
-using Cxx
-using Singular
-```
-or Polymake.jl via
-```
-using Cxx
-using Polymake
+docker run -p 8888:8888 -v "$(pwd)/data:/data" oscarsystem/oscar-jupyter:latest
 ```
 
-Please note that for Polymake and Singular to work you need to execute `using Cxx` first. This is due to current portability issues.
-
-For an examples see [here](https://nbviewer.jupyter.org/github/oscar-system/OSCARBinder/blob/master/Singular.ipynb) for Singular and [here](https://nbviewer.jupyter.org/github/oscar-system/OSCARBinder/blob/master/g-vectors_of_random_simplicial_6-polytopes.ipynb)
-for Polymake.
-
-## Usage of Jupyter
-
-To start a Jupyter Notebook server, execute the image with
-```
-docker run -it --net="host" oscarsystem/oscardocker:latest
-```
-and after the container started, execute
-```
-jupyter notebook --no-browser
-```
-inside the container. Then open the URL displayed in your terminal.
-
-## Usage on [mybinder.org](http://mybinder.org)
-
-You can use this Docker image as base for your Binder docker repository. See [here](https://github.com/sebasguts/OSCARBinder) for an example. Please note that the versions are tagged by date.
+You will see instructions on what URL to open in your browser.
